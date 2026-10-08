@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Rasio - Media Pembelajaran SD Kelas 6</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN for Kids Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            yellow: '#FFC837',
+                            orange: '#FF8008',
+                            purple: '#8E2DE2',
+                            pink: '#FF416C',
+                            blue: '#00C6FF',
+                            green: '#11998e',
+                            lightBg: '#F0F4F8'
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'wiggle': 'wiggle 0.5s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                    },
+                    keyframes: {
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+                            '50%': { opacity: 0.85, transform: 'scale(1.03)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #fef3c7 50%, #f3e8ff 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        h1, h2, h3, .font-fun {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        .btn-fun {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-fun:active {
+            transform: scale(0.95);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .liquid-fill {
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s ease;
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-12 flex flex-col min-h-screen">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b-4 border-yellow-400 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('beranda')">
+                <div class="w-12 h-12 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg transform -rotate-6 hover:rotate-0 transition">
+                    <i class="fa-solid fa-shapes"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent leading-none">
+                        Dunia Rasio!
+                    </h1>
+                    <span class="text-xs font-semibold text-slate-500">Matematika SD Kelas 6</span>
+                </div>
+            </div>
+
+            <!-- User Info & Global Progress -->
+            <div class="flex items-center space-x-3 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white flex items-center justify-center font-bold text-sm shadow" id="avatar-icon">
+                        <i class="fa-solid fa-user-ninja"></i>
+                    </div>
+                    <span id="display-student-name" class="font-bold text-slate-700 text-sm max-w-[100px] truncate">Siswa Juara</span>
+                </div>
+                <div class="h-4 w-px bg-amber-300"></div>
+                <div class="flex items-center space-x-1 text-amber-600 font-bold text-sm">
+                    <i class="fa-solid fa-star text-amber-500 animate-pulse"></i>
+                    <span id="global-score">0</span> XP
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Menu Nav Tabs -->
+        <nav class="max-w-6xl mx-auto px-2 mt-1 overflow-x-auto custom-scrollbar">
+            <div class="flex space-x-1 md:space-x-2 pb-2 min-w-max justify-center">
+                <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-btn px-4 py-2 rounded-2xl font-bold text-sm flex items-center space-x-2 transition bg-amber-500 text-white shadow-md">
+                    <span>🏠</span><span>Beranda</span>
+                </button>
+                <button onclick="switchTab('materi')" id="nav-materi" class="nav-btn px-4 py-2 rounded-2xl font-bold text-sm flex items-center space-x-2 transition text-slate-600 hover:bg-amber-100">
+                    <span>📚</span><span>Materi</span>
+                </button>
+                <button onclick="switchTab('simulasi')" id="nav-simulasi" class="nav-btn px-4 py-2 rounded-2xl font-bold text-sm flex items-center space-x-2 transition text-slate-600 hover:bg-amber-100">
+                    <span>🔬</span><span>Simulasi</span>
+                </button>
+                <button onclick="switchTab('permainan')" id="nav-permainan" class="nav-btn px-4 py-2 rounded-2xl font-bold text-sm flex items-center space-x-2 transition text-slate-600 hover:bg-amber-100">
+                    <span>🎮</span><span>Permainan</span>
+                </button>
+                <button onclick="switchTab('kuis')" id="nav-kuis" class="nav-btn px-4 py-2 rounded-2xl font-bold text-sm flex items-center space-x-2 transition text-slate-600 hover:bg-amber-100">
+                    <span>📝</span><span>Kuis</span>
+                </button>
+                <button onclick="switchTab('hasil')" id="nav-hasil" class="nav-btn px-4 py-2 rounded-2xl font-bold text-sm flex items-center space-x-2 transition text-slate-600 hover:bg-amber-100">
+                    <span>🏆</span><span>Hasil</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- TAB 1: BERANDA -->
+        <section id="tab-beranda" class="tab-content block space-y-6 animate-fade-in">
+            <!-- Hero Card -->
+            <div class="glass-card rounded-3xl p-6 md:p-10 relative overflow-hidden border-2 border-orange-200">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-amber-200/50 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-7 space-y-4">
+                        <span class="inline-block bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider border border-orange-300">
+                            ✨ Petualangan Matematika Seru
+                        </span>
+                        <h2 class="text-3xl md:text-5xl font-extrabold text-slate-800 leading-tight">
+                            Halo! Siap Mengenal <span class="text-orange-500 underline decoration-wavy decoration-yellow-400">Rasio</span>?
+                        </h2>
+                        <p class="text-slate-600 text-base md:text-lg leading-relaxed">
+                            Yuk, jelajahi rahasia perbandingan angka di sekitarmu! Dari membuat resep es sirup lezat sampai membandingkan koleksi kelereng.
+                        </p>
+
+                        <!-- Student Name Input Modal Trigger / Card -->
+                        <div class="bg-white/80 p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-3 items-center">
+                            <i class="fa-solid fa-id-card text-2xl text-amber-500"></i>
+                            <div class="flex-grow w-full">
+                                <label for="input-student-name" class="block text-xs font-bold text-slate-500 uppercase">Nama Kamu:</label>
+                                <input type="text" id="input-student-name" placeholder="Tulis namamu di sini..." value="Siswa Juara" oninput="updateStudentName(this.value)" class="w-full bg-transparent font-bold text-slate-700 focus:outline-none text-base">
+                            </div>
+                            <button onclick="playSound('click'); switchTab('materi')" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg btn-fun whitespace-nowrap flex items-center justify-center space-x-2">
+                                <span>Mulai Belajar</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-5 flex justify-center">
+                        <div class="relative w-64 h-64 bg-gradient-to-tr from-amber-300 to-orange-400 rounded-3xl p-4 shadow-xl flex items-center justify-center transform rotate-3 hover:rotate-0 transition duration-300">
+                            <div class="text-center text-white space-y-2">
+                                <div class="text-6xl animate-bounce-slow">🥤🍊</div>
+                                <div class="text-2xl font-bold font-fun">3 : 2</div>
+                                <p class="text-xs bg-white/20 backdrop-blur px-3 py-1 rounded-full font-semibold">3 Jeruk : 2 Air</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learning Objectives & Quick Map -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-card p-5 rounded-2xl flex items-start space-x-4 border-l-8 border-blue-500">
+                    <div class="text-3xl text-blue-500 p-2 bg-blue-50 rounded-xl"><i class="fa-solid fa-bullseye"></i></div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Tujuan Belajar</h3>
+                        <p class="text-xs text-slate-600 mt-1">Memahami konsep rasio, membandingkan dua besaran, dan menemukan rasio senilai.</p>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl flex items-start space-x-4 border-l-8 border-green-500">
+                    <div class="text-3xl text-green-500 p-2 bg-green-50 rounded-xl"><i class="fa-solid fa-flask"></i></div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Simulasi & Game</h3>
+                        <p class="text-xs text-slate-600 mt-1">Praktikkan langsung membuat ramuan dan memecahkan puzzle rasio interaktif.</p>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl flex items-start space-x-4 border-l-8 border-purple-500">
+                    <div class="text-3xl text-purple-500 p-2 bg-purple-50 rounded-xl"><i class="fa-solid fa-award"></i></div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Kuis & Lencana</h3>
+                        <p class="text-xs text-slate-600 mt-1">Uji kemampuanmu, dapatkan skor tinggi, dan koleksi 4 lencana bintang!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="glass-card p-6 rounded-3xl space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-bars-progress text-amber-500"></i>
+                        <span>Progres Petualanganmu</span>
+                    </h3>
+                    <span id="overall-progress-percent" class="text-sm font-extrabold text-amber-600">0%</span>
+                </div>
+                <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden p-0.5 shadow-inner">
+                    <div id="overall-progress-bar" class="bg-gradient-to-r from-amber-400 to-orange-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs pt-2 font-bold text-slate-600">
+                    <div class="bg-slate-100 p-2 rounded-xl" id="prog-materi-status">📚 Materi: <span>Belum</span></div>
+                    <div class="bg-slate-100 p-2 rounded-xl" id="prog-sim-status">🔬 Simulasi: <span>Belum</span></div>
+                    <div class="bg-slate-100 p-2 rounded-xl" id="prog-game-status">🎮 Game: <span>0/3 Level</span></div>
+                    <div class="bg-slate-100 p-2 rounded-xl" id="prog-kuis-status">📝 Kuis: <span>0/5 Soal</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: MATERI -->
+        <section id="tab-materi" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Modul Belajar</span>
+                <h2 class="text-3xl font-extrabold text-slate-800">Apa Itu Rasio?</h2>
+                <p class="text-slate-600 text-sm">Klik kartu di bawah ini untuk mempelajari rahasia rasio langkah demi langkah!</p>
+            </div>
+
+            <!-- Interactive Accordion / Cards for Material -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Concept 1 -->
+                <div class="glass-card rounded-3xl p-6 border-2 border-amber-200 hover:border-amber-400 transition cursor-pointer" onclick="toggleConcept('c1')">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 bg-amber-500 text-white font-bold rounded-2xl flex items-center justify-center text-lg shadow">1</span>
+                            <h3 class="text-xl font-bold text-slate-800">Pengertian Rasio</h3>
+                        </div>
+                        <i id="icon-c1" class="fa-solid fa-chevron-down text-slate-400"></i>
+                    </div>
+                    <div id="body-c1" class="mt-4 space-y-3 text-slate-600 text-sm border-t pt-3">
+                        <p><strong>Rasio (atau Perbandingan)</strong> adalah cara kita membandingkan dua jumlah atau besaran sejenis.</p>
+                        <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-center justify-around text-center">
+                            <div>
+                                <span class="text-3xl">🍎🍎🍎</span>
+                                <p class="font-bold text-xs mt-1">3 Apel Merah</p>
+                            </div>
+                            <span class="font-extrabold text-slate-400 text-xl">berbanding</span>
+                            <div>
+                                <span class="text-3xl">🍏🍏</span>
+                                <p class="font-bold text-xs mt-1">2 Apel Hijau</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500 italic">Dapat dituliskan sebagai <strong>3 : 2</strong> atau <strong>3 / 2</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Concept 2 -->
+                <div class="glass-card rounded-3xl p-6 border-2 border-blue-200 hover:border-blue-400 transition cursor-pointer" onclick="toggleConcept('c2')">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 bg-blue-500 text-white font-bold rounded-2xl flex items-center justify-center text-lg shadow">2</span>
+                            <h3 class="text-xl font-bold text-slate-800">Urutan Itu Penting!</h3>
+                        </div>
+                        <i id="icon-c2" class="fa-solid fa-chevron-down text-slate-400"></i>
+                    </div>
+                    <div id="body-c2" class="mt-4 space-y-3 text-slate-600 text-sm border-t pt-3">
+                        <p class="text-xs">Hati-hati ya! Urutan angka pada rasio tidak boleh tertukar!</p>
+                        <div class="bg-blue-50 p-3 rounded-2xl border border-blue-200 space-y-2">
+                            <p><strong>Kelereng Merah : Kelereng Biru</strong> = <span class="text-blue-600 font-bold">4 : 1</span></p>
+                            <p><strong>Kelereng Biru : Kelereng Merah</strong> = <span class="text-blue-600 font-bold">1 : 4</span></p>
+                        </div>
+                        <p class="text-xs text-slate-500">Selalu perhatikan benda mana yang disebutkan lebih dahulu!</p>
+                    </div>
+                </div>
+
+                <!-- Concept 3 -->
+                <div class="glass-card rounded-3xl p-6 border-2 border-green-200 hover:border-green-400 transition cursor-pointer" onclick="toggleConcept('c3')">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 bg-green-500 text-white font-bold rounded-2xl flex items-center justify-center text-lg shadow">3</span>
+                            <h3 class="text-xl font-bold text-slate-800">Rasio Senilai</h3>
+                        </div>
+                        <i id="icon-c3" class="fa-solid fa-chevron-down text-slate-400"></i>
+                    </div>
+                    <div id="body-c3" class="mt-4 space-y-3 text-slate-600 text-sm border-t pt-3">
+                        <p>Dua rasio disebut <strong>senilai</strong> jika perbandingannya bernilai sama setelah dikali atau dibagi dengan angka yang sama.</p>
+                        <div class="bg-green-50 p-3 rounded-2xl border border-green-200 text-center font-mono text-sm space-y-1">
+                            <div class="font-bold text-green-700">1 : 2  =  2 : 4  =  3 : 6</div>
+                            <p class="text-xs text-slate-500 font-sans">(Semua nilai rasio sederhana di atas adalah 1 berbanding 2)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept 4 -->
+                <div class="glass-card rounded-3xl p-6 border-2 border-purple-200 hover:border-purple-400 transition cursor-pointer" onclick="toggleConcept('c4')">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 bg-purple-500 text-white font-bold rounded-2xl flex items-center justify-center text-lg shadow">4</span>
+                            <h3 class="text-xl font-bold text-slate-800">Menyederhanakan Rasio</h3>
+                        </div>
+                        <i id="icon-c4" class="fa-solid fa-chevron-down text-slate-400"></i>
+                    </div>
+                    <div id="body-c4" class="mt-4 space-y-3 text-slate-600 text-sm border-t pt-3">
+                        <p>Sama seperti pecahan, rasio bisa disederhanakan dengan membagi kedua angka menggunakan **FPB (Faktor Persekutuan Terbesar)**.</p>
+                        <div class="bg-purple-50 p-3 rounded-2xl border border-purple-200 font-bold text-purple-800 text-center">
+                            6 : 8 <span class="text-xs text-slate-500 font-normal">(Sama-sama dibagi 2)</span> ➡️ 3 : 4
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complete Reading Button -->
+            <div class="text-center pt-4">
+                <button onclick="markMateriComplete()" class="bg-green-500 hover:bg-green-600 text-white font-bold px-8 py-3 rounded-2xl shadow-lg btn-fun inline-flex items-center space-x-2">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Saya Sudah Paham Materi Ini!</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 3: SIMULASI INTERAKTIF -->
+        <section id="tab-simulasi" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Laboratorium Interaktif</span>
+                <h2 class="text-3xl font-extrabold text-slate-800">Simulasi Campuran Sirup Ajaib 🧪</h2>
+                <p class="text-slate-600 text-sm">Geser tombol pengatur di bawah untuk menambah sirup & air, lalu amati perubahan manis dan warna rasio!</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <!-- Controls Side -->
+                <div class="lg:col-span-5 glass-card p-6 rounded-3xl space-y-6">
+                    <h3 class="font-bold text-lg text-slate-800 border-b pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-blue-500"></i>
+                        <span>Atur Takaran Bahan</span>
+                    </h3>
+
+                    <!-- Syrup Slider -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between font-bold text-sm">
+                            <span class="text-red-500 flex items-center gap-1"><i class="fa-solid fa-bottle-droplet"></i> Sirup Merah</span>
+                            <span id="sim-syrup-val" class="bg-red-100 text-red-700 px-3 py-0.5 rounded-full">2 Sendok</span>
+                        </div>
+                        <input type="range" id="sim-syrup-slider" min="1" max="10" value="2" oninput="updateSimulation()" class="w-full h-3 bg-red-100 rounded-lg appearance-none cursor-pointer accent-red-500">
+                    </div>
+
+                    <!-- Water Slider -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between font-bold text-sm">
+                            <span class="text-blue-500 flex items-center gap-1"><i class="fa-solid fa-glass-water"></i> Air Matang</span>
+                            <span id="sim-water-val" class="bg-blue-100 text-blue-700 px-3 py-0.5 rounded-full">4 Cangkir</span>
+                        </div>
+                        <input type="range" id="sim-water-slider" min="1" max="10" value="4" oninput="updateSimulation()" class="w-full h-3 bg-blue-100 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+
+                    <!-- Quick Preset Buttons -->
+                    <div class="pt-2">
+                        <label class="text-xs font-bold text-slate-500 block mb-2">Coba Resep Siap Pakai:</label>
+                        <div class="grid grid-cols-3 gap-2 text-xs font-bold">
+                            <button onclick="setSimPreset(1,2)" class="p-2 bg-slate-100 hover:bg-amber-100 rounded-xl border text-slate-700 btn-fun">1 : 2 (Sedang)</button>
+                            <button onclick="setSimPreset(3,1)" class="p-2 bg-slate-100 hover:bg-amber-100 rounded-xl border text-slate-700 btn-fun">3 : 1 (Manis)</button>
+                            <button onclick="setSimPreset(1,5)" class="p-2 bg-slate-100 hover:bg-amber-100 rounded-xl border text-slate-700 btn-fun">1 : 5 (Hambar)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Output Side -->
+                <div class="lg:col-span-7 glass-card p-6 rounded-3xl space-y-6 text-center">
+                    <div class="flex justify-around items-end h-56 bg-slate-50/80 rounded-2xl p-4 border relative overflow-hidden">
+                        
+                        <!-- Visual Glass -->
+                        <div class="relative w-28 h-44 border-4 border-slate-400 border-t-0 rounded-b-3xl bg-white/40 overflow-hidden shadow-inner flex flex-col justify-end">
+                            <div id="sim-glass-liquid" class="w-full liquid-fill bg-red-400 rounded-b-2xl relative" style="height: 50%;">
+                                <!-- Bubbles Animation -->
+                                <div class="absolute inset-0 opacity-30 flex justify-around items-center text-xs animate-pulse">✨ Bubble</div>
+                            </div>
+                        </div>
+
+                        <!-- Analysis Panel -->
+                        <div class="text-left space-y-3 bg-white p-4 rounded-2xl border shadow-sm max-w-xs w-full">
+                            <div>
+                                <span class="text-xs font-bold text-slate-400 uppercase">Rasio Sirup : Air</span>
+                                <div id="sim-ratio-raw" class="text-2xl font-black text-slate-800">2 : 4</div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs font-bold text-slate-400 uppercase">Bentuk Paling Sederhana</span>
+                                <div id="sim-ratio-simple" class="text-xl font-bold text-green-600 bg-green-50 px-3 py-1 rounded-xl border border-green-200 inline-block">1 : 2</div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs font-bold text-slate-400 uppercase">Tingkat Rasa Rasa</span>
+                                <div id="sim-taste-badge" class="text-xs font-bold px-3 py-1 rounded-full text-white bg-amber-500 inline-block mt-1">Manis Pas!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explanation Box -->
+                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs text-slate-700 text-left space-y-1">
+                        <p class="font-bold text-amber-800 flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                            <span>Hubungan Sebab-Akibat:</span>
+                        </p>
+                        <p id="sim-explanation-text">Setiap 1 sendok sirup dicampur dengan 2 cangkir air. Jika sirup digandakan, air juga harus digandakan agar rasanya tetap sama!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: PERMAINAN -->
+        <section id="tab-permainan" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Petualangan Interaktif</span>
+                <h2 class="text-3xl font-extrabold text-slate-800">Dapur Koki Rasio 👨‍🍳</h2>
+                <p class="text-slate-600 text-sm">Bantu Koki Rasio menyiapkan resep makanan sesuai petunjuk rasio yang diminta!</p>
+            </div>
+
+            <!-- Level Selector Bar -->
+            <div class="flex justify-center space-x-2">
+                <button id="lvl-btn-1" onclick="loadGameLevel(1)" class="px-5 py-2.5 rounded-2xl font-bold text-xs md:text-sm bg-emerald-500 text-white shadow btn-fun">
+                    Level 1: Mudah 🟢
+                </button>
+                <button id="lvl-btn-2" onclick="loadGameLevel(2)" class="px-5 py-2.5 rounded-2xl font-bold text-xs md:text-sm bg-slate-200 text-slate-600 hover:bg-emerald-100 btn-fun">
+                    Level 2: Sedang 🟡
+                </button>
+                <button id="lvl-btn-3" onclick="loadGameLevel(3)" class="px-5 py-2.5 rounded-2xl font-bold text-xs md:text-sm bg-slate-200 text-slate-600 hover:bg-emerald-100 btn-fun">
+                    Level 3: Menantang 🔴
+                </button>
+            </div>
+
+            <!-- Game Board Card -->
+            <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6 relative overflow-hidden border-2 border-emerald-200">
+                <!-- Level Info -->
+                <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-4">
+                    <div>
+                        <span id="game-level-title" class="font-extrabold text-slate-800 text-lg">Level 1: Menghitung Rasio Buah</span>
+                        <p id="game-level-desc" class="text-xs text-slate-500">Kumpulkan buah ke piring sesuai dengan pesanan rasio koki!</p>
+                    </div>
+                    <div class="bg-emerald-100 text-emerald-800 font-bold px-4 py-1.5 rounded-2xl text-xs flex items-center space-x-2">
+                        <span>Poin Permainan:</span>
+                        <span id="game-score-display" class="text-base font-extrabold text-emerald-600">0</span>
+                    </div>
+                </div>
+
+                <!-- Mission Target Banner -->
+                <div class="bg-gradient-to-r from-amber-400 to-orange-400 text-white p-4 rounded-2xl shadow-md text-center font-bold text-base md:text-lg flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-scroll text-yellow-200 text-2xl"></i>
+                    <span id="game-target-text">Pesanan: Buat rasio 3 Apel Merah : 2 Jeruk Kuning!</span>
+                </div>
+
+                <!-- Interactive Kitchen Workspace -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <!-- Item 1 Container -->
+                    <div class="bg-white/80 p-5 rounded-2xl border text-center space-y-3 shadow-sm">
+                        <span class="font-bold text-slate-700 text-sm block" id="game-item1-label">🍎 Apel Merah</span>
+                        <div id="game-item1-box" class="flex flex-wrap justify-center gap-2 min-h-[80px] p-2 bg-slate-50 rounded-xl border border-dashed border-slate-300 items-center">
+                            <!-- Dynamic items injected here -->
+                        </div>
+                        <div class="flex justify-center space-x-2">
+                            <button onclick="addGameItem(1)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold w-10 h-10 rounded-xl btn-fun text-xl shadow">+</button>
+                            <button onclick="removeGameItem(1)" class="bg-rose-500 hover:bg-rose-600 text-white font-bold w-10 h-10 rounded-xl btn-fun text-xl shadow">-</button>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 Container -->
+                    <div class="bg-white/80 p-5 rounded-2xl border text-center space-y-3 shadow-sm">
+                        <span class="font-bold text-slate-700 text-sm block" id="game-item2-label">🍊 Jeruk Kuning</span>
+                        <div id="game-item2-box" class="flex flex-wrap justify-center gap-2 min-h-[80px] p-2 bg-slate-50 rounded-xl border border-dashed border-slate-300 items-center">
+                            <!-- Dynamic items injected here -->
+                        </div>
+                        <div class="flex justify-center space-x-2">
+                            <button onclick="addGameItem(2)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold w-10 h-10 rounded-xl btn-fun text-xl shadow">+</button>
+                            <button onclick="removeGameItem(2)" class="bg-rose-500 hover:bg-rose-600 text-white font-bold w-10 h-10 rounded-xl btn-fun text-xl shadow">-</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Recipe State & Submit Button -->
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
+                    <div class="text-slate-700 text-sm font-bold bg-slate-100 px-4 py-2 rounded-2xl">
+                        Rasio Saat Ini: <span id="game-current-ratio" class="text-orange-600 font-black text-lg">0 : 0</span>
+                    </div>
+                    <button onclick="checkGameAnswer()" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold px-8 py-3.5 rounded-2xl shadow-lg btn-fun text-base flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-utensils"></i>
+                        <span>Sajikan Resep Koki!</span>
+                    </button>
+                </div>
+
+                <!-- Feedback Toast inside Game -->
+                <div id="game-feedback" class="hidden p-4 rounded-2xl text-center font-bold text-sm animate-fade-in"></div>
+            </div>
+        </section>
+
+        <!-- TAB 5: KUIS -->
+        <section id="tab-kuis" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Uji Pemahaman</span>
+                <h2 class="text-3xl font-extrabold text-slate-800">Kuis Pintar Rasio 📝</h2>
+                <p class="text-slate-600 text-sm">Jawab 5 pertanyaan pilihan ganda berikut untuk membuktikan kepintaranmu!</p>
+            </div>
+
+            <!-- Quiz Container -->
+            <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6 max-w-3xl mx-auto border-2 border-rose-200">
+                <!-- Quiz Header Progress -->
+                <div class="flex justify-between items-center border-b pb-4">
+                    <span id="quiz-progress-text" class="font-bold text-slate-600 text-sm">Soal 1 dari 5</span>
+                    <span id="quiz-score-badge" class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full font-bold text-xs">Skor: 0 XP</span>
+                </div>
+
+                <!-- Question Text -->
+                <div class="space-y-3">
+                    <div id="quiz-question" class="text-lg md:text-xl font-bold text-slate-800 leading-snug">
+                        Memuat pertanyaan...
+                    </div>
+                </div>
+
+                <!-- Multiple Choice Options -->
+                <div id="quiz-options" class="grid grid-cols-1 gap-3 pt-2">
+                    <!-- Options injected dynamically -->
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="quiz-explanation" class="hidden bg-slate-100 border p-4 rounded-2xl text-xs md:text-sm space-y-2">
+                    <div id="quiz-explanation-title" class="font-bold text-slate-800"></div>
+                    <p id="quiz-explanation-body" class="text-slate-600 leading-relaxed"></p>
+                </div>
+
+                <!-- Bottom Navigation Buttons -->
+                <div class="flex justify-between items-center pt-2">
+                    <button id="quiz-retry-btn" onclick="retryCurrentQuizQuestion()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-5 py-2.5 rounded-xl text-xs btn-fun">
+                        <i class="fa-solid fa-rotate-left"></i> Coba Lagi
+                    </button>
+                    <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden bg-rose-500 hover:bg-rose-600 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow btn-fun ml-auto">
+                        Soal Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: HASIL -->
+        <section id="tab-hasil" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Laporan Capaian</span>
+                <h2 class="text-3xl font-extrabold text-slate-800">Rapor & Lencana Penghargaan 🏆</h2>
+                <p class="text-slate-600 text-sm">Selamat! Inilah ringkasan pencapaian hebatmu selama belajar Rasio.</p>
+            </div>
+
+            <!-- Main Score Card -->
+            <div class="glass-card rounded-3xl p-6 md:p-10 text-center space-y-6 border-2 border-yellow-300 bg-gradient-to-b from-amber-50/50 to-white">
+                <div class="w-24 h-24 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-full mx-auto flex items-center justify-center text-white text-5xl shadow-xl animate-bounce-slow">
+                    🏆
+                </div>
+
+                <div>
+                    <h3 id="result-student-display" class="text-2xl md:text-3xl font-extrabold text-slate-800">Siswa Juara</h3>
+                    <p id="result-motivation-msg" class="text-amber-700 font-bold text-sm md:text-base mt-1">Kamu sangat hebat! Tetap semangat belajar matematika ya!</p>
+                </div>
+
+                <!-- Total Score Display -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                    <div class="bg-white p-4 rounded-2xl border shadow-sm">
+                        <span class="text-xs text-slate-400 font-bold block">TOTAL SKOR</span>
+                        <span id="final-total-score" class="text-3xl font-black text-amber-500">0 XP</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border shadow-sm">
+                        <span class="text-xs text-slate-400 font-bold block">SKOR KUIS</span>
+                        <span id="final-quiz-score" class="text-3xl font-black text-rose-500">0/100</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border shadow-sm">
+                        <span class="text-xs text-slate-400 font-bold block">GAME SELESAI</span>
+                        <span id="final-game-cleared" class="text-3xl font-black text-emerald-500">0/3</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border shadow-sm">
+                        <span class="text-xs text-slate-400 font-bold block">BINTANG</span>
+                        <span id="final-stars-count" class="text-3xl font-black text-yellow-500">⭐⭐⭐</span>
+                    </div>
+                </div>
+
+                <!-- Badges Collection Grid -->
+                <div class="pt-4 border-t space-y-3">
+                    <h4 class="font-extrabold text-slate-800 text-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-medal text-amber-500"></i>
+                        <span>Koleksi Lencana Kamu</span>
+                    </h4>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <!-- Badge 1 -->
+                        <div id="badge-materi" class="bg-slate-100 opacity-50 p-4 rounded-2xl border text-center space-y-2 transition duration-300">
+                            <div class="text-4xl">📖</div>
+                            <h5 class="font-bold text-xs text-slate-800">Pembaca Pembelajar</h5>
+                            <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded-full text-slate-600 block">Baca Materi</span>
+                        </div>
+                        <!-- Badge 2 -->
+                        <div id="badge-simulasi" class="bg-slate-100 opacity-50 p-4 rounded-2xl border text-center space-y-2 transition duration-300">
+                            <div class="text-4xl">🧪</div>
+                            <h5 class="font-bold text-xs text-slate-800">Ilmuwan Rasio</h5>
+                            <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded-full text-slate-600 block">Coba Simulasi</span>
+                        </div>
+                        <!-- Badge 3 -->
+                        <div id="badge-game" class="bg-slate-100 opacity-50 p-4 rounded-2xl border text-center space-y-2 transition duration-300">
+                            <div class="text-4xl">👨‍🍳</div>
+                            <h5 class="font-bold text-xs text-slate-800">Master Koki Rasio</h5>
+                            <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded-full text-slate-600 block">Tamatkan Game</span>
+                        </div>
+                        <!-- Badge 4 -->
+                        <div id="badge-kuis" class="bg-slate-100 opacity-50 p-4 rounded-2xl border text-center space-y-2 transition duration-300">
+                            <div class="text-4xl">👑</div>
+                            <h5 class="font-bold text-xs text-slate-800">Raja Kuis Rasio</h5>
+                            <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded-full text-slate-600 block">Kuis Perfect</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap justify-center gap-3 pt-4">
+                    <button onclick="restartAllProgress()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-6 py-3 rounded-2xl btn-fun text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                        <span>Ulang dari Awal</span>
+                    </button>
+                    <button onclick="window.print()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-2xl shadow-lg btn-fun text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak Rapor Saya</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-slate-500 text-xs border-t bg-white/50">
+        <p>© 2026 Media Pembelajaran Interaktif Matematika SD Kelas 6 — Materi: Mengenal Rasio</p>
+    </footer>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // Global State Variables
+        let studentState = {
+            name: "Siswa Juara",
+            score: 0,
+            materiCompleted: false,
+            simulasiExplored: false,
+            gameClearedLevels: [false, false, false],
+            quizCompleted: false,
+            quizScore: 0,
+            quizCorrectCount: 0
+        };
+
+        // Quiz Questions Data (Min 5 items with rich explanations)
+        const quizData = [
+            {
+                question: "Di dalam kantong terdapat 6 kelereng merah dan 3 kelereng biru. Berapakah rasio kelereng merah terhadap kelereng biru?",
+                options: [
+                    "6 : 3 (bisa disederhanakan jadi 2 : 1)",
+                    "3 : 6 (bisa disederhanakan jadi 1 : 2)",
+                    "6 : 9",
+                    "3 : 2"
+                ],
+                correct: 0,
+                explanation: "Rasio kelereng merah : biru = 6 : 3. Jika disederhanakan dengan membagi kedua angka dengan 3, hasilnya adalah 2 : 1."
+            },
+            {
+                question: "Ibu membuat es buah. Untuk setiap 2 botol sirup, Ibu memerlukan 5 liter air. Jika Ibu menggunakan 4 botol sirup, berapa liter air yang dibutuhkan?",
+                options: [
+                    "7 liter",
+                    "8 liter",
+                    "10 liter",
+                    "12 liter"
+                ],
+                correct: 2,
+                explanation: "Rasio awal Sirup : Air = 2 : 5. Jumlah sirup digandakan dari 2 menjadi 4 (dikali 2). Maka jumlah air juga harus dikali 2, yaitu 5 × 2 = 10 liter."
+            },
+            {
+                question: "Rasio yang SENILAI dengan 3 : 4 adalah...",
+                options: [
+                    "6 : 8",
+                    "4 : 3",
+                    "9 : 10",
+                    "5 : 6"
+                ],
+                correct: 0,
+                explanation: "Jika rasio 3 : 4 dikalikan 2 pada kedua sisinya, maka 3 × 2 = 6 dan 4 × 2 = 8, menghasilkan 6 : 8."
+            },
+            {
+                question: "Di kelas VI A, rasio siswa laki-laki dan perempuan adalah 2 : 3. Jika jumlah siswa laki-laki 10 orang, berapa jumlah siswa perempuan?",
+                options: [
+                    "12 orang",
+                    "15 orang",
+                    "18 orang",
+                    "20 orang"
+                ],
+                correct: 1,
+                explanation: "Rasio 2 : 3. Angka rasio laki-laki adalah 2, yang bernilai 10 orang (dikali 5). Maka perempuan (angka rasio 3) bernilai 3 × 5 = 15 orang."
+            },
+            {
+                question: "Bentuk paling SEDERHANA dari rasio 12 : 16 adalah...",
+                options: [
+                    "6 : 8",
+                    "3 : 4",
+                    "2 : 3",
+                    "4 : 5"
+                ],
+                correct: 1,
+                explanation: "FPB dari 12 dan 16 adalah 4. Jika 12 ÷ 4 = 3, dan 16 ÷ 4 = 4. Maka bentuk paling sederhananya adalah 3 : 4."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let currentGameLevel = 1;
+        let gameItem1Count = 0;
+        let gameItem2Count = 0;
+
+        // Level Configurations for Interactive Game
+        const gameLevels = {
+            1: {
+                title: "Level 1: Menghitung Rasio Buah (Mudah)",
+                desc: "Buat campuran buah di dalam piring koki!",
+                targetText: "Pesanan: Siapkan Apel & Jeruk dengan rasio 3 : 2!",
+                item1Label: "🍎 Apel Merah",
+                item2Label: "🍊 Jeruk Kuning",
+                item1Emoji: "🍎",
+                item2Emoji: "🍊",
+                reqRatio1: 3,
+                reqRatio2: 2,
+                allowMultiplier: true,
+                rewardXP: 100
+            },
+            2: {
+                title: "Level 2: Rasio Kelereng Warna (Sedang)",
+                desc: "Campurkan kelereng untuk memenangkan pertandingan!",
+                targetText: "Pesanan: Kumpulkan Kelereng Merah & Biru senilai rasio 1 : 3 (Total minimal 8 kelereng)!",
+                item1Label: "🔴 Kelereng Merah",
+                item2Label: "🔵 Kelereng Biru",
+                item1Emoji: "🔴",
+                item2Emoji: "🔵",
+                reqRatio1: 2,
+                reqRatio2: 6, // 2:6 is equivalent to 1:3
+                allowMultiplier: false,
+                rewardXP: 150
+            },
+            3: {
+                title: "Level 3: Resep Ramian Ajaib (Menantang)",
+                desc: "Rancangkan resep potion sains matematika!",
+                targetText: "Pesanan: Racik Potion Hijau & Ungu dengan rasio sederhana 2 : 5 (Gunakan persis 4 Potion Hijau)!",
+                item1Label: "🧪 Potion Hijau",
+                item2Label: "💜 Potion Ungu",
+                item1Emoji: "🧪",
+                item2Emoji: "💜",
+                reqRatio1: 4,
+                reqRatio2: 10, // 4:10 simplifies to 2:5
+                allowMultiplier: false,
+                rewardXP: 200
+            }
+        };
+
+        // Web Audio API Sound Generator (No external file dependency)
+        function playSound(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'correct') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now); // A3
+                    osc.frequency.setValueAtTime(180, now + 0.15);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'fanfare') {
+                    // Victory fanfare sequence
+                    [400, 500, 600, 800].forEach((freq, idx) => {
+                        const subOsc = ctx.createOscillator();
+                        const subGain = ctx.createGain();
+                        subOsc.connect(subGain);
+                        subGain.connect(ctx.destination);
+                        subOsc.frequency.setValueAtTime(freq, now + (idx * 0.12));
+                        subGain.gain.setValueAtTime(0.2, now + (idx * 0.12));
+                        subGain.gain.linearRampToValueAtTime(0.01, now + (idx * 0.12) + 0.15);
+                        subOsc.start(now + (idx * 0.12));
+                        subOsc.stop(now + (idx * 0.12) + 0.15);
+                    });
+                }
+            } catch (e) {
+                console.log('Audio error:', e);
+            }
+        }
+
+        // Navigation Handler
+        function switchTab(tabId) {
+            playSound('click');
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.classList.remove('block');
+            });
+
+            // Deactivate all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-white', 'shadow-md');
+                btn.classList.add('text-slate-600', 'hover:bg-amber-100');
+            });
+
+            // Show selected tab
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+                targetTab.classList.add('block');
+            }
+
+            // Highlight selected nav button
+            const targetBtn = document.getElementById(`nav-${tabId}`);
+            if (targetBtn) {
+                targetBtn.classList.add('bg-amber-500', 'text-white', 'shadow-md');
+                targetBtn.classList.remove('text-slate-600', 'hover:bg-amber-100');
+            }
+
+            // Trigger tab specific setups
+            if (tabId === 'simulasi' && !studentState.simulasiExplored) {
+                studentState.simulasiExplored = true;
+                addScore(50);
+                updateProgress();
+            } else if (tabId === 'permainan') {
+                loadGameLevel(currentGameLevel);
+            } else if (tabId === 'kuis') {
+                renderQuizQuestion();
+            } else if (tabId === 'hasil') {
+                updateResultsSummary();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Student Name Updater
+        function updateStudentName(name) {
+            studentState.name = name || "Siswa Juara";
+            document.getElementById('display-student-name').innerText = studentState.name;
+        }
+
+        // Global Score & Progress Management
+        function addScore(points) {
+            studentState.score += points;
+            document.getElementById('global-score').innerText = studentState.score;
+        }
+
+        function updateProgress() {
+            let totalTasks = 4; // Materi, Simulasi, Game, Kuis
+            let completedCount = 0;
+
+            if (studentState.materiCompleted) completedCount += 1;
+            if (studentState.simulasiExplored) completedCount += 1;
+            
+            const gameClearedCount = studentState.gameClearedLevels.filter(Boolean).length;
+            completedCount += (gameClearedCount / 3);
+
+            if (studentState.quizCompleted) completedCount += 1;
+
+            const percentage = Math.round((completedCount / totalTasks) * 100);
+
+            document.getElementById('overall-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('overall-progress-percent').innerText = `${percentage}%`;
+
+            // Update Status Pills
+            document.getElementById('prog-materi-status').innerHTML = `📚 Materi: <span>${studentState.materiCompleted ? '✅ Selesai' : 'Belum'}</span>`;
+            document.getElementById('prog-sim-status').innerHTML = `🔬 Simulasi: <span>${studentState.simulasiExplored ? '✅ Dicoba' : 'Belum'}</span>`;
+            document.getElementById('prog-game-status').innerHTML = `🎮 Game: <span>${gameClearedCount}/3 Level</span>`;
+            document.getElementById('prog-kuis-status').innerHTML = `📝 Kuis: <span>${studentState.quizCompleted ? '✅ Selesai' : '0/5 Soal'}</span>`;
+
+            updateBadgesUI();
+        }
+
+        // Material Accordion Toggle
+        function toggleConcept(id) {
+            playSound('click');
+            const body = document.getElementById(`body-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            
+            if (body.classList.contains('hidden')) {
+                body.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                body.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        function markMateriComplete() {
+            if (!studentState.materiCompleted) {
+                studentState.materiCompleted = true;
+                addScore(50);
+                playSound('correct');
+                updateProgress();
+            }
+            switchTab('simulasi');
+        }
+
+        // Simulation Logic
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function setSimPreset(syrup, water) {
+            playSound('click');
+            document.getElementById('sim-syrup-slider').value = syrup;
+            document.getElementById('sim-water-slider').value = water;
+            updateSimulation();
+        }
+
+        function updateSimulation() {
+            const syrup = parseInt(document.getElementById('sim-syrup-slider').value);
+            const water = parseInt(document.getElementById('sim-water-slider').value);
+
+            document.getElementById('sim-syrup-val').innerText = `${syrup} Sendok`;
+            document.getElementById('sim-water-val').innerText = `${water} Cangkir`;
+
+            document.getElementById('sim-ratio-raw').innerText = `${syrup} : ${water}`;
+
+            const divisor = gcd(syrup, water);
+            const simpleSyrup = syrup / divisor;
+            const simpleWater = water / divisor;
+
+            document.getElementById('sim-ratio-simple').innerText = `${simpleSyrup} : ${simpleWater}`;
+
+            // Liquid Glass Visual Calculation
+            const glassLiquid = document.getElementById('sim-glass-liquid');
+            const totalUnits = syrup + water;
+            const fillHeight = Math.min(Math.max((totalUnits / 15) * 100, 25), 90);
+            glassLiquid.style.height = `${fillHeight}%`;
+
+            // Color tone changes based on concentration ratio (syrup / water)
+            const concentration = syrup / water;
+            let tasteText = "Manis Pas!";
+            let tasteBg = "bg-green-500";
+            let explanation = `Setiap ${simpleSyrup} sendok sirup dipasangkan dengan ${simpleWater} cangkir air.`;
+
+            if (concentration > 1) {
+                tasteText = "Sangat Manis / Pekat! 🍯";
+                tasteBg = "bg-red-500";
+                glassLiquid.style.backgroundColor = "#dc2626"; // dark red
+                explanation += " Kadar sirup sangat banyak dibanding air, membuat rasanya sangat manis!";
+            } else if (concentration === 1) {
+                tasteText = "Manis Mantap! 🥤";
+                tasteBg = "bg-amber-500";
+                glassLiquid.style.backgroundColor = "#f97316"; // orange
+                explanation += " Jumlah sirup dan air seimbang 1 berbanding 1!";
+            } else if (concentration >= 0.4) {
+                tasteText = "Manis Pas & Segar! 🍹";
+                tasteBg = "bg-emerald-500";
+                glassLiquid.style.backgroundColor = "#ef4444"; // red
+                explanation += " Campuran yang ideal untuk diminum saat cuaca panas!";
+            } else {
+                tasteText = "Hambar / Kurang Manis 💧";
+                tasteBg = "bg-blue-400";
+                glassLiquid.style.backgroundColor = "#fca5a5"; // light pink
+                explanation += " Airnya terlalu banyak, rasa manis sirup jadi kurang terasa.";
+            }
+
+            const tasteBadge = document.getElementById('sim-taste-badge');
+            tasteBadge.innerText = tasteText;
+            tasteBadge.className = `text-xs font-bold px-3 py-1 rounded-full text-white inline-block mt-1 ${tasteBg}`;
+
+            document.getElementById('sim-explanation-text').innerText = explanation;
+        }
+
+        // Game Logic
+        function loadGameLevel(lvl) {
+            playSound('click');
+            currentGameLevel = lvl;
+            gameItem1Count = 0;
+            gameItem2Count = 0;
+
+            // Highlight Level Button
+            [1, 2, 3].forEach(i => {
+                const btn = document.getElementById(`lvl-btn-${i}`);
+                if (i === lvl) {
+                    btn.className = "px-5 py-2.5 rounded-2xl font-bold text-xs md:text-sm bg-emerald-500 text-white shadow btn-fun";
+                } else {
+                    btn.className = "px-5 py-2.5 rounded-2xl font-bold text-xs md:text-sm bg-slate-200 text-slate-600 hover:bg-emerald-100 btn-fun";
+                }
+            });
+
+            const config = gameLevels[lvl];
+            document.getElementById('game-level-title').innerText = config.title;
+            document.getElementById('game-level-desc').innerText = config.desc;
+            document.getElementById('game-target-text').innerText = config.targetText;
+
+            document.getElementById('game-item1-label').innerText = config.item1Label;
+            document.getElementById('game-item2-label').innerText = config.item2Label;
+
+            document.getElementById('game-feedback').classList.add('hidden');
+
+            renderGameWorkspace();
+        }
+
+        function addGameItem(type) {
+            playSound('click');
+            if (type === 1 && gameItem1Count < 12) gameItem1Count++;
+            if (type === 2 && gameItem2Count < 12) gameItem2Count++;
+            renderGameWorkspace();
+        }
+
+        function removeGameItem(type) {
+            playSound('click');
+            if (type === 1 && gameItem1Count > 0) gameItem1Count--;
+            if (type === 2 && gameItem2Count > 0) gameItem2Count--;
+            renderGameWorkspace();
+        }
+
+        function renderGameWorkspace() {
+            const config = gameLevels[currentGameLevel];
+            const box1 = document.getElementById('game-item1-box');
+            const box2 = document.getElementById('game-item2-box');
+
+            box1.innerHTML = '';
+            for (let i = 0; i < gameItem1Count; i++) {
+                box1.innerHTML += `<span class="text-2xl animate-pulse cursor-pointer" onclick="removeGameItem(1)">${config.item1Emoji}</span>`;
+            }
+            if (gameItem1Count === 0) box1.innerHTML = '<span class="text-xs text-slate-400">Kosong</span>';
+
+            box2.innerHTML = '';
+            for (let i = 0; i < gameItem2Count; i++) {
+                box2.innerHTML += `<span class="text-2xl animate-pulse cursor-pointer" onclick="removeGameItem(2)">${config.item2Emoji}</span>`;
+            }
+            if (gameItem2Count === 0) box2.innerHTML = '<span class="text-xs text-slate-400">Kosong</span>';
+
+            document.getElementById('game-current-ratio').innerText = `${gameItem1Count} : ${gameItem2Count}`;
+        }
+
+        function checkGameAnswer() {
+            const config = gameLevels[currentGameLevel];
+            const feedback = document.getElementById('game-feedback');
+            feedback.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
+
+            if (gameItem1Count === 0 || gameItem2Count === 0) {
+                playSound('wrong');
+                feedback.classList.add('bg-amber-100', 'text-amber-800');
+                feedback.innerText = "⚠️ Masukkan minimal 1 item untuk masing-masing piring ya!";
+                return;
+            }
+
+            let isCorrect = false;
+
+            if (currentGameLevel === 1) {
+                // Exact 3:2 or multiplier
+                isCorrect = (gameItem1Count === 3 && gameItem2Count === 2) || (gameItem1Count === 6 && gameItem2Count === 4);
+            } else if (currentGameLevel === 2) {
+                // Must equal 2:6 (which simplifies to 1:3)
+                isCorrect = (gameItem1Count === 2 && gameItem2Count === 6);
+            } else if (currentGameLevel === 3) {
+                // Must be 4:10
+                isCorrect = (gameItem1Count === 4 && gameItem2Count === 10);
+            }
+
+            if (isCorrect) {
+                playSound('correct');
+                feedback.classList.add('bg-green-100', 'text-green-800');
+                feedback.innerHTML = `🎉 <strong>Luar Biasa!</strong> Resepmu pas sekali dengan pesanan Koki! (+${config.rewardXP} XP)`;
+                
+                if (!studentState.gameClearedLevels[currentGameLevel - 1]) {
+                    studentState.gameClearedLevels[currentGameLevel - 1] = true;
+                    addScore(config.rewardXP);
+                    document.getElementById('game-score-display').innerText = studentState.score;
+                    updateProgress();
+                }
+
+                // Auto advance if next level exists
+                if (currentGameLevel < 3) {
+                    setTimeout(() => {
+                        loadGameLevel(currentGameLevel + 1);
+                    }, 2000);
+                }
+            } else {
+                playSound('wrong');
+                feedback.classList.add('bg-rose-100', 'text-rose-800');
+                feedback.innerText = `❌ Rasio saat ini (${gameItem1Count} : ${gameItem2Count}) belum pas dengan pesanan. Coba sesuaikan jumlahnya lagi yuk!`;
+            }
+        }
+
+        // Quiz System
+        function renderQuizQuestion() {
+            if (currentQuizIndex >= quizData.length) {
+                finishQuiz();
+                return;
+            }
+
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quiz-progress-text').innerText = `Soal ${currentQuizIndex + 1} dari ${quizData.length}`;
+            document.getElementById('quiz-score-badge').innerText = `Skor Kuis: ${studentState.quizScore} XP`;
+            document.getElementById('quiz-question').innerText = q.question;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            document.getElementById('quiz-explanation').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+            document.getElementById('quiz-retry-btn').classList.add('hidden');
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-rose-400 bg-white hover:bg-rose-50/50 font-bold text-slate-700 text-sm md:text-base transition btn-fun flex items-center justify-between";
+                btn.onclick = () => selectQuizOption(idx);
+                btn.id = `quiz-opt-${idx}`;
+                btn.innerHTML = `
+                    <span>${String.fromCharCode(65 + idx)}. ${optText}</span>
+                    <i class="fa-regular fa-circle text-slate-300"></i>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizOption(selectedIndex) {
+            const q = quizData[currentQuizIndex];
+            const isCorrect = (selectedIndex === q.correct);
+
+            // Disable all option buttons
+            for (let i = 0; i < q.options.length; i++) {
+                const btn = document.getElementById(`quiz-opt-${i}`);
+                btn.disabled = true;
+                if (i === q.correct) {
+                    btn.className = "w-full text-left p-4 rounded-2xl border-2 border-green-500 bg-green-50 font-bold text-green-800 text-sm md:text-base flex items-center justify-between";
+                    btn.querySelector('i').className = "fa-solid fa-circle-check text-green-500 text-lg";
+                } else if (i === selectedIndex && !isCorrect) {
+                    btn.className = "w-full text-left p-4 rounded-2xl border-2 border-rose-500 bg-rose-50 font-bold text-rose-800 text-sm md:text-base flex items-center justify-between";
+                    btn.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-500 text-lg";
+                }
+            }
+
+            const expBox = document.getElementById('quiz-explanation');
+            const expTitle = document.getElementById('quiz-explanation-title');
+            const expBody = document.getElementById('quiz-explanation-body');
+            expBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                playSound('correct');
+                studentState.quizScore += 20;
+                studentState.quizCorrectCount += 1;
+                expBox.className = "bg-green-50 border border-green-200 p-4 rounded-2xl text-xs md:text-sm space-y-1 text-green-900";
+                expTitle.innerHTML = "🎉 Jawabanmu Benar!";
+            } else {
+                playSound('wrong');
+                expBox.className = "bg-rose-50 border border-rose-200 p-4 rounded-2xl text-xs md:text-sm space-y-1 text-rose-900";
+                expTitle.innerHTML = "💡 Jawaban Kurang Tepat";
+                document.getElementById('quiz-retry-btn').classList.remove('hidden');
+            }
+
+            expBody.innerText = q.explanation;
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+            document.getElementById('quiz-score-badge').innerText = `Skor Kuis: ${studentState.quizScore} XP`;
+        }
+
+        function retryCurrentQuizQuestion() {
+            playSound('click');
+            renderQuizQuestion();
+        }
+
+        function nextQuizQuestion() {
+            playSound('click');
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                renderQuizQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            studentState.quizCompleted = true;
+            addScore(studentState.quizScore);
+            playSound('fanfare');
+            updateProgress();
+            switchTab('hasil');
+        }
+
+        // Results & Badges Update
+        function updateResultsSummary() {
+            document.getElementById('result-student-display').innerText = studentState.name;
+            document.getElementById('final-total-score').innerText = `${studentState.score} XP`;
+            document.getElementById('final-quiz-score').innerText = `${studentState.quizScore}/100`;
+
+            const gameClearedCount = studentState.gameClearedLevels.filter(Boolean).length;
+            document.getElementById('final-game-cleared').innerText = `${gameClearedCount}/3`;
+
+            // Stars Calculation
+            let stars = "⭐";
+            if (studentState.score >= 200) stars = "⭐⭐";
+            if (studentState.score >= 350) stars = "⭐⭐⭐";
+            document.getElementById('final-stars-count').innerText = stars;
+
+            // Motivational Message Generator
+            let msg = "Kamu sudah melangkah jauh! Teruskan latihanmu ya!";
+            if (studentState.score >= 350) {
+                msg = "🏆 LUAR BIASA! Kamu adalah Master Rasio Sejati Kelas 6!";
+            } else if (studentState.score >= 200) {
+                msg = "🌟 HEBAT! Pemahaman Rasiomu sudah sangat bagus!";
+            }
+            document.getElementById('result-motivation-msg').innerText = msg;
+
+            updateBadgesUI();
+        }
+
+        function updateBadgesUI() {
+            // Badge 1: Pembaca Pembelajar
+            if (studentState.materiCompleted) {
+                const b1 = document.getElementById('badge-materi');
+                b1.classList.remove('opacity-50', 'bg-slate-100');
+                b1.classList.add('bg-amber-100', 'border-amber-300', 'shadow-md');
+            }
+            // Badge 2: Ilmuwan Rasio
+            if (studentState.simulasiExplored) {
+                const b2 = document.getElementById('badge-simulasi');
+                b2.classList.remove('opacity-50', 'bg-slate-100');
+                b2.classList.add('bg-blue-100', 'border-blue-300', 'shadow-md');
+            }
+            // Badge 3: Master Koki Rasio
+            if (studentState.gameClearedLevels.filter(Boolean).length === 3) {
+                const b3 = document.getElementById('badge-game');
+                b3.classList.remove('opacity-50', 'bg-slate-100');
+                b3.classList.add('bg-emerald-100', 'border-emerald-300', 'shadow-md');
+            }
+            // Badge 4: Raja Kuis Rasio
+            if (studentState.quizCompleted && studentState.quizScore >= 80) {
+                const b4 = document.getElementById('badge-kuis');
+                b4.classList.remove('opacity-50', 'bg-slate-100');
+                b4.classList.add('bg-purple-100', 'border-purple-300', 'shadow-md');
+            }
+        }
+
+        function restartAllProgress() {
+            playSound('click');
+            studentState = {
+                name: document.getElementById('input-student-name').value || "Siswa Juara",
+                score: 0,
+                materiCompleted: false,
+                simulasiExplored: false,
+                gameClearedLevels: [false, false, false],
+                quizCompleted: false,
+                quizScore: 0,
+                quizCorrectCount: 0
+            };
+            currentQuizIndex = 0;
+            document.getElementById('global-score').innerText = '0';
+            updateProgress();
+            switchTab('beranda');
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            updateSimulation();
+            updateProgress();
+        };
+    </script>
+</body>
+</html>
